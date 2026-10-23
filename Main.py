@@ -110,8 +110,6 @@ def selecionar_cadastro(event):
 
         buscar_empresa(None)
 
-        # entry_razao_edit.delete(0, ctk.END)
-        # entry_razao_edit.insert(ctk.END, selected_data[5])
 
         entry_status_edit.delete(0, ctk.END)
         entry_status_edit.insert(ctk.END, selected_data[6])
@@ -284,8 +282,6 @@ def inserir_cadastro():
     colunas = [info[1] for info in cursor.fetchall()]
 
     # if 'cnpj_empresa' not in colunas:
-    #     cursor.execute('ALTER TABLE pessoas ADD COLUMN cnpj TEXT')
-    #     conn.commit()
 
     cursor.execute(
         'INSERT INTO pessoas (nome, cpf, nascimento, codempresa, razao, cnpj, status, admissao, funcao, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -309,11 +305,9 @@ def inserir_cadastro():
     entry_nome.focus_set()
 
 def buscar_cnpj(codempresa):
-    # Conectar ao banco de dados de empresas
     conn_empresas = sqlite3.connect('empresas.db')
     cursor_empresas = conn_empresas.cursor()
 
-    # Consultar o CNPJ da empresa
     cursor_empresas.execute("SELECT cnpj FROM empresas WHERE codigo=?", (codempresa,))
     resultado = cursor_empresas.fetchone()
 
@@ -897,11 +891,9 @@ botao_insemp = ctk.CTkButton(frame_CadEmp, text='Inserir Empresa', command=inser
 botao_insemp.place(relx=0.65, rely=0.6, relwidth=0.2, relheight=0.2)
 
 
-# Vincular a tecla ENTER aos botões
 botao_inserir.bind("<Return>", chamar_insercao)
 botao_editar.bind("<Return>", chamar_edicao)
 botao_buscar.bind("<Return>", chamar_busca)
 botao_insemp.bind("<Return>", chamar_inserirempresa)
 
-# Loop principal da interface gráfica
 janela.mainloop()
