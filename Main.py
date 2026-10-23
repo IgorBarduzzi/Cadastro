@@ -11,6 +11,39 @@ ctk.set_default_color_theme("dark-blue")
 id_atual = None
 
 
+def init_db():
+    """Inicializa as tabelas do banco de dados SQLite caso ainda não existam."""
+    with sqlite3.connect('cadastros.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS pessoas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT,
+                cpf TEXT,
+                nascimento TEXT,
+                codempresa TEXT,
+                razao TEXT,
+                cnpj TEXT,
+                status TEXT,
+                admissao TEXT,
+                funcao TEXT,
+                salario TEXT
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS empresas (
+                codigo INTEGER PRIMARY KEY,
+                nome TEXT NOT NULL,
+                cnpj TEXT
+            )
+        ''')
+        conn.commit()
+
+
+# Garante banco pronto antes de qualquer interação do usuário
+init_db()
+
+
 def exportar_para_excel():
     conn = sqlite3.connect('cadastros.db')
     cursor = conn.cursor()
